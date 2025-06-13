@@ -49,6 +49,7 @@
         background-image: url("https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80");
         background-size: cover;
         background-position: center;
+        object-fit: cover;
         color: #333;
         margin: 0;
         padding: 20px;
@@ -397,6 +398,7 @@
             countriesContainer.style.display = "flex"; // Ensure the container is visible
             if (data.length > 0) {
               // countriesContainer.style.backgroundImage = `url(${data[0].flags.png})`;
+              // countriesContainer.style.backgroundRepeat = "repeat";
               document.body.style.backgroundSize = "cover";
               document.body.style.backgroundPosition = "center";
             }
