@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .body1 {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 400px;
+        /* flex-direction: column; */
+
+        align-items: center;
+        justify-content: center;
+        height: 60vh;
+        /* margin-top: 100px; */
+      }
+      .div {
+        text-align: start;
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: #333;
+        line-height: 1.5;
+        font-family: Arial, sans-serif;
+        /* background-color: #f0f0f0; */
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .flag {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+        /* color: #06060c; */
+      }
+      /* .country {
+        margin-right: 50px;
+        text-align: center;
+        border: 2px solid #ccc;
+      } */
+      /* .population {
+        margin-bottom: 20px;
+      } */
+      .search-bar {
+        margin: 0 auto;
+      }
+      #countryInput {
+        position: absolute;
+        top: 150px;
+        left: 10px;
+        padding: 10px;
+        font-size: 16px;
+        width: 50vw; /* Responsive width */
+        min-width: 120px;
+        max-width: 400px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: border-color 0.3s ease;
+      }
+      #countryInput:focus {
+        border-color: #007bff;
+        outline: none;
+      }
+      #languageSelect {
+        position: absolute;
+        top: 200px;
+        left: 10px;
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: border-color 0.3s ease;
+      }
+      #languageSelect:focus {
+        border-color: #007bff;
+        outline: none;
+      }
+
+      #searchButton {
+        position: absolute;
+        top: 200px;
+        left: 10px;
+        /* left: calc(120px + 52vw);  */
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        height: 36px;
+        width: 20vw; /* Responsive width */
+        min-width: 80px;
+        max-width: 150px;
+      }
+      #searchButton:hover {
+        background-color: #0056b3;
+      }
+      .country {
+        display: flex;
+      }
+      .container {
+        text-align: center;
+        border: 2px solid #ccc;
+        padding: 20px;
+        margin: 20px;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        max-width: 200px;
+      }
+      .container:hover {
+        transform: scale(1.05);
+      }
+      .neighbor-btn {
+        margin: 2px 4px;
+        padding: 4px 8px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background: #e6e6e6;
+        cursor: pointer;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+      .neighbor-btn:hover {
+        background: #d0eaff;
+      }
+      .space {
+        margin-bottom: 20px;
+      }
+
+      select {
+        margin-top: 60px;
+      }
+      /* Responsive adjustments for small screens */
+      @media (max-width: 600px) {
+        #countryInput {
+          width: 60vw;
+          left: 10px;
+          font-size: 14px;
+          padding: 8px;
+        }
+        #searchButton {
+          left: 10px;
+          width: 25vw;
+          font-size: 14px;
+          padding: 8px 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Country Information Search</h1>
+    <h3 class="description">Enter a country name to get its information.</h3>
+    <div class="search-bar">
+      <input type="text" placeholder="Enter a country name" id="countryInput" />
+      <button id="searchButton">Search</button>
+
+      <select id="languageSelect">
+        <option value="eng">English</option>
+        <option value="spa">Spanish</option>
+        <option value="fra">French</option>
+        <option value="deu">German</option>
+        <option value="ita">Italian</option>
+        <option value="por">Portuguese</option>
+        <option value="rus">Russian</option>
+        <option value="zho">Chinese</option>
+        <option value="ara">Arabic</option>
+        <!-- Add more as needed -->
+      </select>
+    </div>
+    <script>
+      //         .then(function (data) {
+      //           console.log(data);
+      //           const country = data[0];
+      //           const currencyKey = Object.keys(country.currencies)[0];
+      //           const currencySymbol = country.currencies[currencyKey].name;
+      //           const html = `
+      //           <div class="body1" id="countries">
+      //           <div class="container">
+      //   <img class="flag" src="${country.flags.png}" />
+      //   <h1>${country.name.common}</h1>
+      //   <div class="population">👩🏻‍🤝‍🧑🏼 ${country.population.toLocaleString()} people</div>
+      //   <div>Currency: ${currencySymbol}</div>
+      //   <div>Language(s):  ${Object.values(country.languages).join(", ")}</div>
+      //   <div>Capital: ${country.capital ? country.capital[0] : "N/A"}</div>
+      //   <div>Region: ${country.region}</div>
+      //   <div>Subregion: ${country.subregion}</div>
+
+      //   <div>Area: ${country.area.toLocaleString()} km²</div>
+
+      //   <div>UN Member: ${country.unMember ? "Yes" : "No"}</div>
+      //   <div>Driving Side: ${country.car.side}</div>
+
+      //   <div>Calling Codes: ${country.idd.root}${country.idd.suffixes.join(
+      //             ", "
+      //           )}</div>
+      //   <div>Continents: ${country.continents.join(", ")}</div>
+
+      //   </div>
+      //   </div>
+      // `;
+
+      //           // Create a new div element to hold the country information
+      //           const container = document.createElement("div");
+      //           document.body.appendChild(container);
+
+      //           container.className = "country";
+      //           container.innerHTML = html;
+
+      //           // Append the new country information to the body
+      //           document.body.appendChild(container);
+      // document.body.insertAdjacentHTML("beforeend", html);
+
+      // Optionally, you can scroll to the newly added country
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth",
+      });
+      // Optionally, you can set the background image of the body to the country's flag
+      // container.style.backgroundImage = `url(${country.flags.png})`;
+      // ...existing code inside your trial function...
+      // ...existing code...
+      // const theme = document.querySelector(".theme");
+      const body = document.querySelector("body");
+      const input = document.getElementById("countryInput");
+      const button = document.getElementById("searchButton");
+      const languageSelect = document.getElementById("languageSelect");
+
+      let currentCountryData = null; // Store last fetched country data
+
+      const trial = function (country) {
+        fetch(`https://restcountries.com/v3.1/name/${country}`)
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            if (!Array.isArray(data) || data.status === 404) {
+              alert("No countries found.");
+              return;
+            }
+            // Save the first for language switching
+            currentCountryData = data;
+
+            let countriesContainer = document.getElementById("countries");
+            if (!countriesContainer) {
+              countriesContainer = document.createElement("div");
+              countriesContainer.id = "countries";
+              countriesContainer.className = "body1";
+              document.body.appendChild(countriesContainer);
+            }
+            countriesContainer.innerHTML = ""; // Clear previous results
+
+            // For each country in the results
+            data.forEach((country) => {
+              const langCode = languageSelect.value;
+
+              // Helper to get translation or fallback
+              const getTrans = (obj, key, fallback) => {
+                if (!obj) return fallback;
+                if (
+                  obj.translations &&
+                  obj.translations[langCode] &&
+                  obj.translations[langCode][key]
+                ) {
+                  return obj.translations[langCode][key];
+                }
+                return fallback;
+              };
+
+              // Country name
+              let translatedName = getTrans(
+                country,
+                "common",
+                country.name.common
+              );
+
+              // Capital
+              let translatedCapital =
+                country.capital && country.capital.length > 0
+                  ? getTrans(
+                      {
+                        translations: {
+                          [langCode]: { capital: country.capital[0] },
+                        },
+                      },
+                      "capital",
+                      country.capital[0]
+                    )
+                  : "N/A";
+
+              // Region
+              let translatedRegion = getTrans(
+                { translations: { [langCode]: { region: country.region } } },
+                "region",
+                country.region
+              );
+
+              // Subregion
+              let translatedSubregion = getTrans(
+                {
+                  translations: {
+                    [langCode]: { subregion: country.subregion },
+                  },
+                },
+                "subregion",
+                country.subregion
+              );
+
+              // Continents
+              let translatedContinents = country.continents
+                ? country.continents
+                    .map((cont) =>
+                      getTrans(
+                        { translations: { [langCode]: { continent: cont } } },
+                        "continent",
+                        cont
+                      )
+                    )
+                    .join(", ")
+                : "N/A";
+
+              // Languages
+              let translatedLanguages = country.languages
+                ? Object.values(country.languages).join(", ")
+                : "N/A";
+              if (
+                country.translations &&
+                country.translations[langCode] &&
+                country.translations[langCode].official
+              ) {
+                translatedLanguages = country.translations[langCode].official;
+              }
+
+              // Currency
+              const currencyKey = Object.keys(country.currencies || {})[0];
+              const currencyName = currencyKey
+                ? country.currencies[currencyKey].name
+                : "N/A";
+
+              // Neighboring countries (fetch names and directions)
+              let neighborsHTML = "<div>No neighboring countries</div>";
+              if (country.borders && country.borders.length > 0) {
+                neighborsHTML = "Loading neighbors...";
+                fetch(
+                  `https://restcountries.com/v3.1/alpha?codes=${country.borders.join(
+                    ","
+                  )}`
+                )
+                  .then((res) => res.json())
+                  .then((neighbors) => {
+                    const [lat1, lon1] = country.latlng;
+                    neighborsHTML = neighbors
+                      .map((n) => {
+                        // Translate neighbor name
+                        let neighborName = n.name.common;
+                        if (
+                          n.translations &&
+                          n.translations[langCode] &&
+                          n.translations[langCode].common
+                        ) {
+                          neighborName = n.translations[langCode].common;
+                        }
+                        const [lat2, lon2] = n.latlng;
+                        const direction = getDirection(lat1, lon1, lat2, lon2);
+                        return `<button class="neighbor-btn" data-country="${n.name.common}">
+                    ${neighborName} <span style="font-size:12px;">(${direction})</span>
+                  </button>`;
+                      })
+                      .join(" ");
+                    // Update only this country's neighbors section
+                    const neighborsDiv = document.getElementById(
+                      `neighbors-${country.cca3}`
+                    );
+                    if (neighborsDiv) neighborsDiv.innerHTML = neighborsHTML;
+                  });
+              }
+
+              const html = `
+          <div class="container">
+            <img class="flag" src="${country.flags.png}" />
+            ${
+              country.coatOfArms && country.coatOfArms.png
+                ? `<img class="flag" src="${country.coatOfArms.png}" alt="Coat of Arms" style="height:80px;width:auto;margin:10px 0;">`
+                : ""
+            }
+            <h1>${translatedName}</h1>
+            <div class="population div">👩🏻‍🤝‍🧑🏼 ${
+              country.population ? country.population.toLocaleString() : "N/A"
+            } people</div>
+            <div class="div"><strong>Currency:</strong> ${currencyName}</div>
+            <div class="div"><strong>Language(s):</strong> ${translatedLanguages}</div>
+            <div class="div"><strong>Capital:</strong> ${translatedCapital}</div>
+            <div class="div"><strong>Region:</strong> ${translatedRegion}</div>
+            <div class="div"><strong>Subregion:</strong> ${translatedSubregion}</div>
+            <div class="div"><strong>Area:</strong> ${
+              country.area ? country.area.toLocaleString() : "N/A"
+            } km²</div>
+            <div class="div"><strong>UN Member:</strong> ${
+              country.unMember ? "Yes" : "No"
+            }</div>
+            <div class="div"><strong>Driving Side:</strong> ${
+              country.car ? country.car.side : "N/A"
+            }</div>
+            <div class="div"><strong>Calling Codes:</strong> ${
+              country.idd
+                ? country.idd.root +
+                  (country.idd.suffixes ? country.idd.suffixes.join(", ") : "")
+                : "N/A"
+            }</div>
+            <div class="space div"><strong>Continent:</strong> ${translatedContinents}</div>
+            <div class="div"><strong>Neighboring Countries:</strong><br>
+              <div id="neighbors-${country.cca3}">${neighborsHTML}</div>
+            </div>
+          </div>
+        `;
+              countriesContainer.insertAdjacentHTML("beforeend", html);
+            });
+
+            // Add event listeners to neighbor-btns (delegated)
+            setTimeout(() => {
+              document.querySelectorAll(".neighbor-btn").forEach((btn) => {
+                btn.addEventListener("click", function () {
+                  trial(this.dataset.country);
+                });
+              });
+            }, 500);
+          });
+      };
+
+      // Helper: Get compass direction
+      function getDirection(lat1, lon1, lat2, lon2) {
+        const dLat = lat2 - lat1;
+        const dLon = lon2 - lon1;
+        const angle = Math.atan2(dLon, dLat) * (180 / Math.PI);
+        const directions = [
+          "north",
+          "northeast",
+          "east",
+          "southeast",
+          "south",
+          "southwest",
+          "west",
+          "northwest",
+        ];
+        const index = Math.round(((angle + 360) % 360) / 45) % 8;
+        return "to the " + directions[index];
+      }
+
+      // Search button
+      button.addEventListener("click", function () {
+        const country = input.value.trim();
+        if (country) {
+          trial(country);
+          input.value = "";
+        } else {
+          alert("Please enter a country name.");
+        }
+      });
+
+      // Enter key
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+          const country = input.value.trim();
+          if (country) {
+            trial(country);
+            input.value = "";
+          } else {
+            alert("Please enter a country name.");
+          }
+        }
+      });
+
+      // Language switcher event
+      languageSelect.addEventListener("change", function () {
+        // Re-render all cards with the new language
+        if (currentCountryData && Array.isArray(currentCountryData)) {
+          let lastSearch = currentCountryData[0].name.common;
+          if (lastSearch) {
+            trial(lastSearch);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
