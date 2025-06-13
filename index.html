@@ -8,7 +8,7 @@
       .body1 {
         display: flex;
         flex-wrap: wrap;
-        margin-top: 400px;
+        margin-top: 300px;
         /* flex-direction: column; */
 
         align-items: center;
@@ -44,8 +44,14 @@
       /* .population {
         margin-bottom: 20px;
       } */
-      .search-bar {
-        margin: 0 auto;
+      body {
+        font-family: Arial, sans-serif;
+        background-image: url("https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80");
+        background-size: cover;
+        background-position: center;
+        color: #333;
+        margin: 0;
+        padding: 20px;
       }
       #countryInput {
         position: absolute;
@@ -146,7 +152,6 @@
           left: 10px;
           font-size: 14px;
           padding: 8px;
-          
         }
         #searchButton {
           left: 10px;
@@ -154,11 +159,10 @@
           font-size: 14px;
           padding: 8px 10px;
         }
-        h1 {
+        h1,
+        h3 {
           font-size: medium;
         }
-        h3{
-          font-size: small;
       }
     </style>
   </head>
@@ -183,57 +187,6 @@
       </select>
     </div>
     <script>
-      //         .then(function (data) {
-      //           console.log(data);
-      //           const country = data[0];
-      //           const currencyKey = Object.keys(country.currencies)[0];
-      //           const currencySymbol = country.currencies[currencyKey].name;
-      //           const html = `
-      //           <div class="body1" id="countries">
-      //           <div class="container">
-      //   <img class="flag" src="${country.flags.png}" />
-      //   <h1>${country.name.common}</h1>
-      //   <div class="population">👩🏻‍🤝‍🧑🏼 ${country.population.toLocaleString()} people</div>
-      //   <div>Currency: ${currencySymbol}</div>
-      //   <div>Language(s):  ${Object.values(country.languages).join(", ")}</div>
-      //   <div>Capital: ${country.capital ? country.capital[0] : "N/A"}</div>
-      //   <div>Region: ${country.region}</div>
-      //   <div>Subregion: ${country.subregion}</div>
-
-      //   <div>Area: ${country.area.toLocaleString()} km²</div>
-
-      //   <div>UN Member: ${country.unMember ? "Yes" : "No"}</div>
-      //   <div>Driving Side: ${country.car.side}</div>
-
-      //   <div>Calling Codes: ${country.idd.root}${country.idd.suffixes.join(
-      //             ", "
-      //           )}</div>
-      //   <div>Continents: ${country.continents.join(", ")}</div>
-
-      //   </div>
-      //   </div>
-      // `;
-
-      //           // Create a new div element to hold the country information
-      //           const container = document.createElement("div");
-      //           document.body.appendChild(container);
-
-      //           container.className = "country";
-      //           container.innerHTML = html;
-
-      //           // Append the new country information to the body
-      //           document.body.appendChild(container);
-      // document.body.insertAdjacentHTML("beforeend", html);
-
-      // Optionally, you can scroll to the newly added country
-      window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: "smooth",
-      });
-      // Optionally, you can set the background image of the body to the country's flag
-      // container.style.backgroundImage = `url(${country.flags.png})`;
-      // ...existing code inside your trial function...
-      // ...existing code...
       // const theme = document.querySelector(".theme");
       const body = document.querySelector("body");
       const input = document.getElementById("countryInput");
@@ -377,15 +330,25 @@
                         const [lat2, lon2] = n.latlng;
                         const direction = getDirection(lat1, lon1, lat2, lon2);
                         return `<button class="neighbor-btn" data-country="${n.name.common}">
-                    ${neighborName} <span style="font-size:12px;">(${direction})</span>
-                  </button>`;
+        ${neighborName} <span style="font-size:12px;">(${direction})</span>
+      </button>`;
                       })
                       .join(" ");
                     // Update only this country's neighbors section
                     const neighborsDiv = document.getElementById(
                       `neighbors-${country.cca3}`
                     );
-                    if (neighborsDiv) neighborsDiv.innerHTML = neighborsHTML;
+                    if (neighborsDiv) {
+                      neighborsDiv.innerHTML = neighborsHTML;
+                      // Attach event listeners immediately after updating HTML
+                      neighborsDiv
+                        .querySelectorAll(".neighbor-btn")
+                        .forEach((btn) => {
+                          btn.addEventListener("click", function () {
+                            trial(this.dataset.country);
+                          });
+                        });
+                    }
                   });
               }
 
@@ -430,14 +393,20 @@
               countriesContainer.insertAdjacentHTML("beforeend", html);
             });
 
+            // Scroll to the bottom of the page to show the new country
+            countriesContainer.style.display = "flex"; // Ensure the container is visible
+            if (data.length > 0) {
+              // countriesContainer.style.backgroundImage = `url(${data[0].flags.png})`;
+              document.body.style.backgroundSize = "cover";
+              document.body.style.backgroundPosition = "center";
+            }
+            window.scrollTo({
+              top: document.body.scrollHeight,
+              behavior: "smooth",
+            });
+            // Optionally, set the background image if you want:
+
             // Add event listeners to neighbor-btns (delegated)
-            setTimeout(() => {
-              document.querySelectorAll(".neighbor-btn").forEach((btn) => {
-                btn.addEventListener("click", function () {
-                  trial(this.dataset.country);
-                });
-              });
-            }, 500);
           });
       };
 
