@@ -16,8 +16,9 @@
         height: 60vh;
         /* margin-top: 100px; */
       }
-      h1,h3{
-        color:white;
+      .head-1,
+      .head-3 {
+        color: white;
       }
       .div {
         text-align: start;
@@ -35,7 +36,7 @@
       .div-2 {
         margin-bottom: 10px;
 
-/*         font-family: Arial, sans-serif; */
+        /*         font-family: Arial, sans-serif; */
         /* background-color: #f0f0f0; */
         padding: 5px;
         border-radius: 5px;
@@ -175,18 +176,20 @@
           font-size: 14px;
           padding: 8px 10px;
         }
-        h3 {
+        .head-3 {
           font-size: medium;
         }
-        h1 {
+        .head-1 {
           font-size: larger;
         }
       }
     </style>
   </head>
   <body>
-    <h1>Country Information Search</h1>
-    <h3 class="description">Enter a country name to get its information.</h3>
+    <h1 class="head-1">Country Information Search</h1>
+    <h3 class="description head-3">
+      Enter a country name to get its information.
+    </h3>
     <div class="search-bar">
       <input type="text" placeholder="Enter a country name" id="countryInput" />
       <button id="searchButton">Search</button>
